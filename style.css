@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after {
+    box-sizing:border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111111;
+    color: #f4f1e8;
+    font-family: "IBM Plex Mono", monospace;
+    -webkit-font-smoothing: antialiased;
+}
+
+.game-wrapper {
+    position: relative;
+    width: min(100%, 480px);
+    overflow: hidden;
+    border: 2px solid #2b2b2b;
+    border-radius: 8px;
+    background: #181818;
+}
+
+.game-header {
+    min-height: 72px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border-bottom: 2px solid #2b2b2b;
+    background: #181818;
+}
+
+.brand-block {
+    min-width: 0;
+}
+
+.brand-kicker {
+    display:block;
+    margin-bottom: 2px;
+    color: #8d8d86;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+}

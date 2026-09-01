@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#111111" />
+        <title>GO HIGH</title>
+        <link rel="stylesheet" href="style.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+
+        <main class="game-wrapper game-shell">
+
+            <header class="game-header">
+
+                <div class="brand-block">
+                    <span class="brand-kicker">ENDLESS JUMPER</span>
+                    <h1>GO HIGH</h1>
+                </div>
+
+                <div class="game-ui" aria-label="Game Score">
+
+                    <div class="stat-block">
+                        <span class="score-label">SCORE</span>
+                        <span id="scoreEl" class="score-value">0</span>
+                    </div>
+
+                    <div class="stat-block stat-best">
+                        <span class="high-score-label">BEST</span>
+                        <span id="highScoreEl" class="high-score-value">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="game-stage">
+                <canvas id="gameCanvas" width="480" height="600"></canvas>
+
+                <div id="startOverlay" class="overlay overlay-start">
+                    <p class="overlay-label">READY?</p>
+                    <h2>CLIMB AS HIGH AS YOU CAN</h2>
+                    <p><kbd>A</kbd> / <kbd>←</kbd> MOVE LEFT</p>
+                    <p><kbd>D</kbd> / <kbd>→</kbd> MOVE RIGHT</p>
+                    <p class="key-prompt">PRESS ENTER TO START</p>
+                </div>
+
+                <div id="gameOverOverlay" class="overlay overlay-gameover hidden">
+                    <p class="overlay-label">RUN ENDED</p>
+                    <h2>GAME OVER</h2>
+                    <p>FINAL SCORE <span id="finalScoreEl">0</span> </p>
+                    <p class="key-prompt">PRESS ENTER TO RETRY</p>
+                </div>
+            </div>
+
+         <footer class="control-strip">A / ← LEFT&nbsp;&nbsp;&nbsp;D / → RIGHT&nbsp;&nbsp;&nbsp;ENTER START</footer>
+
+        </main>
+
+        <script src="script.js"></script>
+    </body>
+</html>
