@@ -49,3 +49,61 @@ body {
     font-weight: 600;
     letter-spacing: 0.16em;
 }
+
+.brand-block h1 {
+    margin: 0;
+    color: #f4f1e8;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 23px;
+    line-height: 1;
+    letter-spacing: 0.03em;
+}
+
+.game-stage {
+    position: relative;
+    background: #c8ddd5;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 480 / 600;
+    background: #c8ddd5;
+    touch-action: none;
+}
+
+.game-ui {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.stat-block {
+    min-width: 52px;
+    text-align:right;
+}
+
+.score-label,
+.high-score-label {
+    display: block;
+    margin-bottom: 2px;
+    color: #777770;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+
+.score-value,
+.high-score-value {
+    display: block;
+    color: #f4f1e8;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.high-score-value {
+    color: #dfb95d;
+}
