@@ -251,14 +251,119 @@
         gameOverOverlay.classList.remove("hidden");
     }
 
+    function gameLoop() {
+        if(!gameRunning) return;
+        time++;
+        const dt = 1;
+        if(keys.left) player.vx = -MOVE_SPEED;
+        else if(keys.right) player.vx = MOVE_SPEED;
+        else player.vx *= 0.85;
+
+        player.x += player.vx;
+        player.x = Math.max(0, Math.min(CANVAS_WIDTH - player.width, player.x));
+        player.vy += GRAVITY;
+        player.y += player.vy;
+        for(let i = platforms.length - 1; i >= 0; i--) {
+            const p = platforms[i];
+
+            if(p.type === "moving") {
+                p.x = p.startX + Math.sin((time + p.startX) * 0.03) * p.moveRange * p.moveDir;
+                p.x = Math.max(0, Math.min(CANVAS_WIDTH - p.width, p.x));
+            }
+            const py = p.y - cameraY;
+            if(py > CANVAS_HEIGHT + 100) {
+                platforms.splice(i, 1);
+                continue;
+            }
+            const playerBottom = player.y + player.height;
+            const platformTop = p.y;
+            const overlapX = player.x + player.width > p.x && player.x < p.x + p.width;
+
+            if(overlapX && playerBottom >= platformTop - 2 && playerBottom <= platformTop + 12 && player.vy >= 0) {
+                player.vy = JUMP_FORCE;
+                player.y = platformTop - player.height - 1;
+                if(p.type === "break") platforms.splice(i, 1);
+            }
+        }
+        const targetCameraY = player.y - CANVAS_HEIGHT * CAMERA_LEAD;
+
+        if(targetCameraY < cameraY) {
+            cameraY = targetCameraY;
+            const newScore = Math.max(0, Math.floor((startCameraY - cameraY) / 8));
+
+            if(newScore > score) {
+                score = newScore;
+                scoreEl.textContent = score;
+                if(score > highScore) {
+                    highScore = score;
+                    highScoreEl.textContent = highScore;
+                    localStorage.setItem("go-high-score", String(highScore));
+                }
+            }
+            addPlatformsAbove(cameraY);
+        }
+        if(player.y - cameraY > CANVAS_HEIGHT + 50) {
+            gameOver();
+            return;
+        }
+        drawBackdrop();
+        platforms.forEach(drawPlatform);
+        drawPlayer();
+        animationId = requestAnimationFrame(gameLoop);
+        
+    }
+
+    function startGame() {
+        startOverlay.classList.add("hidden");
+        gameOverOverlay.classList.add("hidden");
+        resetGame();
+        gameLoop();
+    }
+
     function isLeftKey(key) {
         return key === "ArrowLeft" || key === "a" || key === "A";
     }
     function isRightKey(key) {
         return key === "ArrowRight" || key === "d" || key === "D";
     }
+
+    document.addEventListener("keydown", function (e) {
+        if(e.key === "Tab") {
+            e.preventDefault();
+            return;
+        }
+        if(e.key === "Enter") {
+            e.preventDefault();
+            if(!gameRunning) startGame();
+            return;
+        }
+        if(isLeftKey(e.key)) {
+            e.preventDefault();
+            keys.left = true;
+        }
+        if(isRightKey(e.key)) {
+            e.preventDefault();
+            keys.right = true;
+        }
+    });
+
+    document.addEventListener("keyup", function(e) {
+        if(isLeftKey(e.key)) {
+            e.preventDefault();
+            keys.left = false;
+        }
+        if(isRightKey(e.key)) {
+            e.preventDefault();
+            keys.right = false;
+        }
+    });
+
     window.addEventListener("blur", function() {
         keys.left = false;
         keys.right = false;
     });
+
+    window.addEventListener("resize", setPixelRatio);
+    setPixelRatio();
+    highScoreEl.textContent = highScore;
 })();
