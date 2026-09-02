@@ -48,4 +48,49 @@
     let gameRunning = false;
     let keys = { left: false, right: false};
     let time = 0;
+
+    function setPixelRatio() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = CANVAS_WIDTH * dpr;
+        canvas.height = CANVAS_HEIGHT * dpr;
+        canvas.style.width = rect.width + "px";
+        canvas.style.height = rect.height + "px";
+        ctx.scale(dpr, dpr);
+    }
+
+    function createPlatform(x, y, width, type) {
+        return {
+            x, 
+            y,
+            width, 
+            height: PLATFORM_HEIGHT,
+            type: type || "normal",
+            moveDir: type === "moving" ? (Math.random() > 0.5 ? 1 : -1) : 0,
+            moveRange: type === "moving" ? 40 + Math.random() * 40 : 0,
+            startX: x,
+        };
+    }
+
+    function initPlatforms() {
+        platforms = [];
+        let y = CANVAS_HEIGHT - 80;
+
+        for(let i = 0; i < 10; i++) {
+            const width = PLATFORM_MIN_WIDTH + Math.random() * (PLATFORM_MAX_WIDTH - PLATFORM_MIN_WIDTH);
+            let x = Math.random() * (CANVAS_WIDTH - width);
+            let type = "normal";
+            if(i === 0) {
+                x = (CANVAS_WIDTH - width) / 2;
+            }
+            else {
+                const typeRand = Math.random();
+                if(typeRand < 0.15) type = "break";
+                else if(typeRand < 0.35) type = "moving";  
+            }
+            platforms.push(createPlatform(x, y, width, type));
+            y -= PLATFORM_GAP_MIN + Math.random() * (PLATFORM_GAP_MAX - PLATFORM_GAP_MIN);
+            
+        }
+    }
 })();
