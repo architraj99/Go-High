@@ -131,6 +131,119 @@
         highScoreEl.textContent = highScore;
     }
 
+    function drawBackdrop() {
+
+        ctx.fillStyle = "#c8ddd5";
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.strokeStyle = "#b5cec5";
+        ctx.lineWidth = 1;
+        const offset = ((-cameraY * 0.2) % 80 + 80) % 80;
+
+       for(let y = offset; y < CANVAS_HEIGHT; y += 80) {
+            ctx.beginPath();
+            ctx.moveTo(16, y);
+            ctx.lineTo(CANVAS_WIDTH - 16, y);
+            ctx.stroke();
+        }
+
+        ctx.strokeStyle = "#9fbdb2";
+        ctx.beginPath();
+        ctx.moveTo(16, 0);
+        ctx.lineTo(16, CANVAS_HEIGHT);
+        ctx.moveTo(CANVAS_WIDTH - 16, 0);
+        ctx.lineTo(CANVAS_WIDTH - 16, CANVAS_HEIGHT);
+        ctx.stroke();
+
+        ctx.fillStyle = "#5f776f";
+        ctx.font = '10px "IBM Plex Mono"';
+        ctx.textAlign = "right";
+
+        for (let y = offset; y < CANVAS_HEIGHT; y += 80) {
+            ctx.fillText("+", CANVAS_WIDTH - 18, y - 5);
+            ctx.beginPath();
+            ctx.moveTo(12, y);
+            ctx.lineTo(21, y);
+            ctx.moveTo(CANVAS_WIDTH - 21, y);
+            ctx.lineTo(CANVAS_WIDTH - 12, y);
+            ctx.stroke();
+        }
+        ctx.fillStyle = "#79978c";
+        ctx.textAlign = "left";
+        ctx.font = '9px "IBM Plex Mono"';
+        ctx.fillText("UP", 24, 24);
+        ctx.strokeStyle = "#86a89b";
+        ctx.beginPath();
+        ctx.moveTo(24, 31);
+        ctx.lineTo(42, 31);
+        ctx.stroke();
+    }
+
+    function drawPlayer() {
+
+        const x = player.x;
+        const y = player.y - cameraY;
+        if (y < -PLAYER_HEIGHT - 20 || y > CANVAS_HEIGHT + 20) return;
+        ctx.save();
+        ctx.translate(x + PLAYER_WIDTH / 2, y + PLAYER_HEIGHT / 2);
+
+        if (keys.left) ctx.scale(-1, 1);
+        ctx.translate(-(x + PLAYER_WIDTH / 2), -(y + PLAYER_HEIGHT / 2));
+        ctx.fillStyle = "#202321";
+
+        ctx.beginPath();
+        ctx.roundRect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT, 6);
+        ctx.fill();
+
+        ctx.fillStyle = "#f4f1e8";
+        ctx.beginPath();
+        ctx.arc(x + 12, y + 14, 6, 0, Math.PI * 2);
+        ctx.arc(x + PLAYER_WIDTH - 12, y + 14, 6, 0, Math.PI * 2);
+
+        ctx.fill();
+        ctx.fillStyle = "#202321";
+        ctx.beginPath();
+        ctx.arc(x + 12, y + 14, 3, 0, Math.PI * 2);
+        ctx.arc(x + PLAYER_WIDTH - 12, y + 14, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#d7b45c";
+        ctx.fillRect(x + 6, y + PLAYER_HEIGHT - 8, PLAYER_WIDTH - 12, 3);
+        ctx.restore();
+    }
+
+    function drawPlatform(p) {
+        const y = p.y - cameraY;
+
+        if(y < -PLATFORM_HEIGHT - 20 || y > CANVAS_HEIGHT + 50) return;
+        const x = p.x;
+        const w = p.width;
+        const h = p.height;
+
+        if (p.type === "normal") {
+            ctx.fillStyle = "#547e61";
+            ctx.strokeStyle = "#355840";
+        } 
+        else if (p.type === "break") {
+            ctx.fillStyle = "#b58c52";
+            ctx.strokeStyle = "#775d38";
+        } 
+        else {
+            ctx.fillStyle = "#718a95";
+            ctx.strokeStyle = "#445b65";
+        }
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 4);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(244, 241, 232, 0.35)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x + 7, y + 4);
+        ctx.lineTo(x + w - 7, y + 4);
+        ctx.stroke();
+    }
+
     function gameOver() {
         gameRunning = false;
         if(animationId) cancelAnimationFrame(animationId);
@@ -144,4 +257,8 @@
     function isRightKey(key) {
         return key === "ArrowRight" || key === "d" || key === "D";
     }
+    window.addEventListener("blur", function() {
+        keys.left = false;
+        keys.right = false;
+    });
 })();
