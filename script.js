@@ -93,4 +93,55 @@
             
         }
     }
+
+    function addPlatformsAbove(topY) {
+        let lastY = platforms.length ? Math.min(...platforms.map((p) => p.y)) : topY;
+        
+        while(lastY > topY - CANVAS_HEIGHT - 200) {
+            lastY -= PLATFORM_GAP_MIN + Math.random() * (PLATFORM_GAP_MAX - PLATFORM_GAP_MIN);
+            const width = PLATFORM_MIN_WIDTH + Math.random() * (PLATFORM_MAX_WIDTH - PLATFORM_MIN_WIDTH);
+            const x = Math.random() * (CANVAS_WIDTH - width);
+            const typeRand = Math.random();
+            let type = "normal";
+            if(typeRand < 0.12) type = "break";
+            else if(typeRand < 0.32) type = "moving";
+            platforms.push(createPlatform(x, lastY, width, type));
+        }
+    }
+
+    function resetGame() {
+        cameraY = 0;
+        score = 0;
+        time = 0;
+        keys.left = false;
+        keys.right = false;
+        initPlatforms();
+        const firstPlatform = platforms[0];
+        player = {
+            x: (CANVAS_WIDTH - PLAYER_WIDTH) / 2,
+            y: firstPlatform.y - PLAYER_HEIGHT - 2,
+            vx: 0,
+            vy: 0,
+            width: PLAYER_WIDTH,
+            height: PLAYER_HEIGHT,
+        };
+        startCameraY = player.y - CANVAS_HEIGHT * CAMERA_LEAD;
+        gameRunning = true;
+        scoreEl.textContent = "0";
+        highScoreEl.textContent = highScore;
+    }
+
+    function gameOver() {
+        gameRunning = false;
+        if(animationId) cancelAnimationFrame(animationId);
+        finalScoreEl.textContent = score;
+        gameOverOverlay.classList.remove("hidden");
+    }
+
+    function isLeftKey(key) {
+        return key === "ArrowLeft" || key === "a" || key === "A";
+    }
+    function isRightKey(key) {
+        return key === "ArrowRight" || key === "d" || key === "D";
+    }
 })();

@@ -163,3 +163,59 @@ body {
     font-family: "IBM Plex Mono", monospace;
     font-size: 11px;
 }
+
+.key-prompt {
+    margin-top: 22px !important;
+    padding: 9px 14px;
+    border: 1px solid #d7b45c;
+    border-radius: 4px;
+    background: #d7b45c;
+    color: #151515 !important;
+    font-size: 11px !important;
+    font-weight: 600;
+    letter-spacing: 0.08em !important;
+}
+
+.overlay-gameover h2 {
+    color: #d96f5f;
+}
+
+.overlay-gameover #finalScoreEl {
+    color: #dfb95d;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 20px;
+}
+
+.control-strip {
+    padding: 9px 12px;
+    border-top: 2px solid #2b2b2b;
+    background: #181818;
+    color: #777770;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    letter-spacing: 0.06em;
+}
+
+@media(max-height: 760px) {
+    body {
+        padding: 8px;
+    }
+    .game-wrapper{
+        width: min(100%, 440px, calc((100vh - 112px) * 0.8));
+    }
+    .game-header{
+        min-height: 58px;
+        padding: 8px 12px;
+    }
+    .brand-kicker {
+        display: none;
+    }
+    .brand-block h1 {
+        font-size: 20px;
+    }
+    .control-strip {
+        padding: 6px 8px;
+    }
+}
